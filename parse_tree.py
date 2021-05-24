@@ -15,6 +15,9 @@ class Node:
     def add_children(self, node):
         self.children.append(node)
 
+    def remove_children(self):
+        self.children = []
+
     def print_node(self):
         print("symbol: ", self.symbol)
         print("children: ", self.children)

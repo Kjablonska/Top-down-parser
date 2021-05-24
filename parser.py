@@ -2,13 +2,17 @@ from parse_tree import Node
 
 CFG = {
     "S": ["A", "$"],
-    "A": ["b", "c", "$"]
+    "A": ["b", "c"]
 }
 
 # Works only in very simple cases.
+
+# TODO:
+# Add backtrcking.
+
 def parser():
     rules = CFG["S"]
-    input = "b"
+    input = "$"
 
     out, parse_tree = rec_parse("S", input, 0, "", Node("S"), [])
     print(out)
@@ -23,9 +27,15 @@ def rec_parse(nonterminal, input, input_iter, out, node, parse_tree):
     print("CFG: " + nonterminal)
     print(rules, out)
 
+    parse_tree.append(node)
+
     for rule in rules:
+        print(rule)
+        match = False
         for i in range(len(rule)):
             node.add_children(rule[i])
+            print_parse_tree(parse_tree)
+
             print("curr rule " + rule)
             print("current input " + input[input_iter])
             if rule[i].isupper() == True:
@@ -36,19 +46,28 @@ def rec_parse(nonterminal, input, input_iter, out, node, parse_tree):
                 if rule[i] == input[input_iter]:
                     out = out + rule[i]
                     input_iter += 1
+                else:
+                    # backtracking:
+                    # 1.Remove last production rule from parse tree for the current symbol.
+                    # 2. Go back and find next prouction rule
+                    node.remove_children()
+                    print("Backtracking")
+                    break
 
             if out == input:
                 match = True
-                parse_tree.append(node)
+                print("match")
+                # parse_tree.append(node)
                 return out, parse_tree
-
+            else:
+                node.remove_children()
+                parse_tree.pop()
         if match == True:
-            parse_tree.append(node)
+            # parse_tree.append(node)
             return out, parse_tree
 
-        print(out)
-
-    print_parse_tree(parse_tree)
+    return out, parse_tree
+        # print_parse_tree(parse_tree)
 
 def parse_tmp(rule, input, input_iter, out):
     for i in range(len(rule)):
@@ -70,8 +89,10 @@ def parse_tmp(rule, input, input_iter, out):
 
 
 def print_parse_tree(parse_tree):
-    print("-------------------------    PARSE TREE      -------------------------")
+    print("\n-------------------------    PARSE TREE      -------------------------")
     for el in parse_tree:
         el.print_node()
+
+    print("----------------------------------------------------------------------\n")
 
 parser()
