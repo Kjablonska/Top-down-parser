@@ -120,5 +120,5 @@ def get_input_string():
 # -------------------------------------------------------------------------------------
 def validate_input_string(input_string):
     if input_string[-1] != INPUT_STRING_END_SYMBOL:
-        raise NameError("Invali input string")
+        raise NameError("Invalid input string")
 

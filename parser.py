@@ -1,24 +1,19 @@
 from parse_tree import Node
 
-# CFG = {
-#     "S": ["A", "$"],
-#     "A": ["b", "c"]
-# }
-
 
 def parser(CFG, input):
-    print(CFG['S'])
+    print(CFG)
     rules = CFG['S']
     input = input[:-1]
 
     if CFG != {}:
         out, parse_tree = rec_parse(CFG, "S", input, 0, "", Node("S"), [])
+        print("End of input parsing")
         print(out)
         print_parse_tree(parse_tree)
 
 
 def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree):
-    print(CFG)
     rules = CFG[nonterminal]
     match = False
 
@@ -47,26 +42,32 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree):
                     input_iter += 1
                 else:
                     # backtracking:
-                    # 1.Remove last production rule from parse tree for the current symbol.
-                    # 2. Go back and find next prouction rule
+                    for el in node.children:
+                        out = out.replace(el, "")
+                        input_iter = input_iter - 1
                     node.remove_children()
+                    match = False
+                    print(out)
                     print("Backtracking")
                     break
 
             if out == input:
                 match = True
                 print("match")
-                # parse_tree.append(node)
                 return out, parse_tree
-            else:
-                node.remove_children()
-                parse_tree.pop()
-        if match == True:
-            # parse_tree.append(node)
-            return out, parse_tree
 
+
+        if match == True:
+            return out, parse_tree
+        else:
+            node.remove_children()
+            # if node.children == [] and len(parse_tree) > 0:
+            #     parse_tree.pop()
+            # input_iter = 0
+
+    print("parsing ends", out)
     return out, parse_tree
-        # print_parse_tree(parse_tree)
+
 
 def parse_tmp(rule, input, input_iter, out):
     for i in range(len(rule)):
@@ -93,5 +94,3 @@ def print_parse_tree(parse_tree):
         el.print_node()
 
     print("----------------------------------------------------------------------\n")
-
-# parser()
