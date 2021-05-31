@@ -1,0 +1,84 @@
+CFG testing
+Please select one of the below files from the path '../tests/CFG_tests' in order to execute the test case.
+
+1. Incorrect cases.
+Test2
+Production rule contains non-terminal symbol which is not defined.
+
+Expected output:
+The program should raise an error with the message "Invalid CFG".
+
+Test3
+Left recursion.
+
+Expected output:
+The program should raise an error with the message "Left recursion is not supported!".
+
+Test4
+Production rules defined by a terminal symbol.
+
+Expected output:
+The program should raise an error with the message "Production rules must start with non-terminal symbols.".
+
+Test5
+Duplicated non-terminal symbols.
+Expected output:
+The program should raise an error with the message "Non-terminal symbol {} already exists in CFG!".
+
+
+Test6
+CFG provided in a file with different extention than .txt
+Expected output:
+The program should raise an error with the message "CFG file must be in .txt format.".
+
+
+2. Correct cases.
+Test6
+Non-terminal symbol never used.
+Expected output:
+The program should properly parse the provided CFG and then ask for the input string.
+
+Test
+Correct CFG.
+Expected output:
+The program should properly parse the provided CFG and then ask for the input string.
+
+
+---------------------------------------------------------------------------------------
+Input string testing
+In order to execute test cases there is a need to provide a correct CFG first. Please take any .txt from the path '../tests/correct_CFG' and ten type input string.
+
+Test
+Input as an empty string.
+Expected output:
+The program should raise an error with the message "Invalid input string".
+
+Test
+Input string not ending with '$' symbol.
+Expected output:
+The program should raise an error with the message "Invalid input string".
+
+
+
+---------------------------------------------------------------------------------------
+Parsing testing
+
+1. Accepted input strings.
+
+Test
+Please select CFG: '../tests/correct_CFG/test1.txt'
+
+Input:
+
+Expected output:
+
+
+Test Simple one-level backtracking.
+Please select CFG: '../tests/correct_CFG/test1.txt'
+
+
+Test More complex backtracking cases.
+Please select CFG: '../tests/correct_CFG/test1.txt'
+
+
+2. Not accepted input strings.

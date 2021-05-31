@@ -53,6 +53,9 @@ def parse_file_to_cfg(file_path):
 
         production_rules = []
         for el in line:
+            if non_terminal in el:
+                raise NameError("Left recursion is not supported!")
+
             if '|' in el:
                 el = el.split(CFG_PRODUCTION_RULES_SEPARATOR)
                 el = (x.strip() for x in el)
