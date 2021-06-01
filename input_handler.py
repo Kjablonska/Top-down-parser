@@ -31,6 +31,7 @@ def get_cfg_file():
     file_path = filedialog.askopenfilename()
     is_txt = Path(file_path).suffix == '.txt'
 
+    print("Provided CFG file: {}".format(file_path))
     # File must be in .txt extension.
     if not is_txt:
         raise NameError("CFG file must be in .txt format.")
@@ -54,7 +55,7 @@ def parse_file_to_cfg(file_path):
         production_rules = []
         for el in line:
             if non_terminal in el:
-                raise NameError("Left recursion is not supported!")
+                raise SyntaxError("Left recursion is not supported!")
 
             if '|' in el:
                 el = el.split(CFG_PRODUCTION_RULES_SEPARATOR)
@@ -79,11 +80,11 @@ def parse_file_to_cfg(file_path):
 # -------------------------------------------------------------------------------------
 def validate_non_terminal(non_terminal, CFG):
     if not non_terminal.isupper():
-        raise NameError(
+        raise SyntaxError(
             "Production rules must start with non-terminal symbols.")
 
     if non_terminal in CFG:
-        raise NameError(
+        raise SyntaxError(
             "Non-terminal symbol {} already exists in CFG!".format(non_terminal))
 
 
@@ -100,7 +101,7 @@ def validate_CFG(CFG):
         for production in production_rules:
             for el in production:
                 if el.isupper() and not (el in CFG):
-                    raise NameError("Invalid CFG")
+                    raise SyntaxError("Invalid CFG")
 
 
 # -------------------------------------------------------------------------------------
@@ -118,10 +119,11 @@ def get_input_string():
 #
 #   Method responsible for validating input string.
 #   It raises error if:
+#       * input is an empty string.
 #       * last element of input string is not equal to INPUT_STRING_END_SYMBOL
 #
 # -------------------------------------------------------------------------------------
 def validate_input_string(input_string):
-    if input_string[-1] != INPUT_STRING_END_SYMBOL:
-        raise NameError("Invalid input string")
+    if input_string == "" or input_string[-1] != INPUT_STRING_END_SYMBOL:
+        raise SyntaxError("Invalid input string")
 

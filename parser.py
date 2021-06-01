@@ -8,9 +8,9 @@ def parser(CFG, input):
     rules = CFG['S']
 
     if CFG != {}:
-        out, parse_tree, match = rec_parse(CFG, "S", input, 0, "", Node("S"), [], 0)
+        out, parse_tree, match, input_iter = rec_parse(CFG, "S", input, 0, "", Node("S"), [], 0)
         print("\n\nEnd of input parsing")
-        if match == True and out == input and parse_tree != []:
+        if match == True and (out == input or out == input[:-1]) and parse_tree != []:
             print("Input string accepted by the CFG\n")
             print_parse_tree(parse_tree)
         else:
@@ -36,10 +36,10 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree, matche
             print("Current production rule {} : {}".format(nonterminal, rule))
             print("Current input character " + input[input_iter])
             if rule[i].isupper() == True:
-                out, parse_tree, match = rec_parse(CFG, rule[i], input, input_iter, out, Node(rule[i]), parse_tree, matched)
+                out, parse_tree, match, input_iter = rec_parse(CFG, rule[i], input, input_iter, out, Node(rule[i]), parse_tree, matched)
                 if out == input[:-1] and match == True:
                     match = True
-                    return out, parse_tree, match
+                    return out, parse_tree, match, input_iter
             else:
                 if rule[i] == input[input_iter]:
                     out = out + rule[i]
@@ -50,14 +50,9 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree, matche
                     match = True
                     continue
                 else:
-                    # backtracking:
                     print("\t\tBacktracking...")
-                    print(input_iter)
-                    print(input[input_iter])
-                    print(input)
-
                     for el in range(matched):
-                        out = out.replace(el, "")
+                        out = out.replace(out[el], "")
                         input_iter = input_iter - 1
 
                     node.remove_children()
@@ -65,17 +60,17 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree, matche
                     matched = 0
                     break
 
-        if (out == input[:-1] or input == '$') and match == True:
+
+        if (out == input[:-1] or out == input or input == '$') and match == True:
             match = True
-            return out, parse_tree, match
+            return out, parse_tree, match, input_iter
 
 
         if out == input[:-1] and match == True:
-            return out, parse_tree, match
-        else:
-            node.remove_children()
+            return out, parse_tree, match, input_iter
 
-    return out, parse_tree, match
+    return out, parse_tree, match, input_iter
+
 
 
 def print_parse_tree(parse_tree):
