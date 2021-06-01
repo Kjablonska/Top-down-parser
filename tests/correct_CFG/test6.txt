@@ -1,0 +1,6 @@
+S ::= A|B
+A ::= c|D
+D ::= x|B
+B ::= f|aG
+G ::= c|df
+H ::= d
