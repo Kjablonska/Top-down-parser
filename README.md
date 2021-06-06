@@ -10,6 +10,6 @@ The program asks for CFG file. After valid CFG is provided, the program asks for
 After validation is successful the input is parsed. At each parsing stage the current parsing tree is printed.
 
 Testing
-Please see ./tests/Tests_with_results.pdf file to all test cases with the results and explanation.
+Please see ./tests/tests_with_results.pdf file to all test cases with the results and explanation.
 
 

@@ -1,4 +1,4 @@
-S ::= A|B
+S ::= A|Bcd
 A ::= c|D
 D ::= x|B
 B ::= f|aG

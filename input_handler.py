@@ -55,20 +55,29 @@ def parse_file_to_cfg(file_path):
         production_rules = []
         for el in line:
             if non_terminal in el:
-                raise SyntaxError("Left recursion is not supported!")
+                raise SyntaxError(
+                    "Error in non-terminal symbol {}. Left recursion is not supported!".format(non_terminal))
 
             if '|' in el:
                 el = el.split(CFG_PRODUCTION_RULES_SEPARATOR)
                 el = (x.strip() for x in el)
+                validate_production_rule(el, non_terminal)
                 production_rules += el
             else:
-                production_rules.append(el.strip())
+                el = el.strip()
+                validate_production_rule(el, non_terminal)
+                production_rules.append(el)
 
         CFG[non_terminal] = production_rules
 
     validate_CFG(CFG)
     return CFG
 
+
+def validate_production_rule(rule, non_terminal):
+    if rule == "":
+        raise SyntaxError(
+            "Error in non-terminal symbol {}. Production rule can not be empty!".format(non_terminal))
 
 # -------------------------------------------------------------------------------------
 #
@@ -78,10 +87,12 @@ def parse_file_to_cfg(file_path):
 #       * such non-terminal already exists in the CFG.
 #
 # -------------------------------------------------------------------------------------
+
+
 def validate_non_terminal(non_terminal, CFG):
     if not non_terminal.isupper():
         raise SyntaxError(
-            "Production rules must start with non-terminal symbols.")
+            "Error in non-terminal symbol {}. Production rules must start with non-terminal symbols.".format(non_terminal))
 
     if non_terminal in CFG:
         raise SyntaxError(
@@ -101,7 +112,7 @@ def validate_CFG(CFG):
         for production in production_rules:
             for el in production:
                 if el.isupper() and not (el in CFG):
-                    raise SyntaxError("Invalid CFG")
+                    raise SyntaxError("Error in {}. Invalid CFG".format(el))
 
 
 # -------------------------------------------------------------------------------------
@@ -126,4 +137,3 @@ def get_input_string():
 def validate_input_string(input_string):
     if input_string == "" or input_string[-1] != INPUT_STRING_END_SYMBOL:
         raise SyntaxError("Invalid input string")
-

@@ -8,7 +8,8 @@ def parser(CFG, input):
     rules = CFG['S']
 
     if CFG != {}:
-        out, parse_tree, match, input_iter = rec_parse(CFG, "S", input, 0, "", Node("S"), [], 0)
+        out, parse_tree, match, input_iter = rec_parse(
+            CFG, "S", input, 0, "", Node("S"), [], 0)
         print("\n\nEnd of input parsing")
         if match == True and (out == input or out == input[:-1]) and parse_tree != []:
             print("Input string accepted by the CFG\n")
@@ -36,7 +37,8 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree, matche
             print("Current production rule {} : {}".format(nonterminal, rule))
             print("Current input character " + input[input_iter])
             if rule[i].isupper() == True:
-                out, parse_tree, match, input_iter = rec_parse(CFG, rule[i], input, input_iter, out, Node(rule[i]), parse_tree, matched)
+                out, parse_tree, match, input_iter = rec_parse(
+                    CFG, rule[i], input, input_iter, out, Node(rule[i]), parse_tree, matched)
                 if out == input[:-1] and match == True:
                     match = True
                     return out, parse_tree, match, input_iter
@@ -60,17 +62,14 @@ def rec_parse(CFG, nonterminal, input, input_iter, out, node, parse_tree, matche
                     matched = 0
                     break
 
-
         if (out == input[:-1] or out == input or input == '$') and match == True:
             match = True
             return out, parse_tree, match, input_iter
 
-
-        if out == input[:-1] and match == True:
+        if (out == input[:-1] or out == input or input == '$') and match == True:
             return out, parse_tree, match, input_iter
 
     return out, parse_tree, match, input_iter
-
 
 
 def print_parse_tree(parse_tree):
@@ -85,4 +84,3 @@ def print_parse_tree(parse_tree):
     for el in parse_tree:
         el.print_node()
     print("----------------------------------------------------------------------\n")
-
