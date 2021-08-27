@@ -1,4 +1,5 @@
 # Top down parser with backtracking.
+The aim of the project was to build a syntax anaylzer following production rules defined by the context free grammar. top-down parser with backtracking. It processed the input string and starts producting the parse tree from the top to the bottom. If one derviation of the tree fails it recursively comes back up and tries to use different rule. In case there are no more production rules - input string is not accepted. The input string may be processed several times to find the right derviation tree (production rules).  
 
 ## Build&run  
 The program requires python3.   
